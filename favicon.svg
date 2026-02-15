@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="6" fill="#1a5c2a"/>
+  <!-- Sprinkler head base -->
+  <rect x="14.5" y="16" width="3" height="10" rx="1" fill="#fff"/>
+  <!-- Sprinkler nozzle -->
+  <rect x="12" y="14" width="8" height="3" rx="1.5" fill="#fff"/>
+  <!-- Water droplets -->
+  <circle cx="8" cy="10" r="1.2" fill="#7ec8e3"/>
+  <circle cx="11" cy="7" r="1" fill="#7ec8e3"/>
+  <circle cx="15" cy="5" r="1.2" fill="#7ec8e3"/>
+  <circle cx="19" cy="6" r="1" fill="#7ec8e3"/>
+  <circle cx="23" cy="9" r="1.2" fill="#7ec8e3"/>
+  <circle cx="6" cy="13" r="0.8" fill="#7ec8e3"/>
+  <circle cx="25" cy="12" r="0.8" fill="#7ec8e3"/>
+</svg>
