@@ -53,7 +53,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 // Seasonal banner
-(function() {
+(function () {
   const month = new Date().getMonth(); // 0-11
   const banner = document.getElementById('seasonal-banner');
   const message = document.getElementById('seasonal-message');
@@ -77,45 +77,59 @@ document.addEventListener('keydown', (e) => {
   message.innerHTML = seasons[season];
 })();
 
-// Inquiry form with Formspree
-(function() {
-  const form = document.getElementById('inquiry-form');
-  const status = document.getElementById('form-status');
-  const submitBtn = document.getElementById('form-submit');
+// Inquiry form via Google Apps Script
+(function () {
+  // Replace with your deployed Apps Script web app URL
+  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyrvY73G0G2AMXmPqGbr79Xi2iLUv2cDSa5oO5sJoPpODng0eAzQTEpJ2Ehc6-weC9muw/exec';
 
-  form.addEventListener('submit', async (e) => {
+  var form = document.getElementById('inquiry-form');
+  var status = document.getElementById('form-status');
+  var submitBtn = document.getElementById('form-submit');
+
+  form.addEventListener('submit', function (e) {
     e.preventDefault();
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending...';
     status.textContent = '';
     status.className = 'form-status';
 
-    try {
-      const response = await fetch(form.action, {
-        method: 'POST',
-        body: new FormData(form),
-        headers: { 'Accept': 'application/json' }
+    var payload = {
+      name: form.name.value,
+      phone: form.phone.value,
+      email: form.email.value,
+      service: form.service.value,
+      message: form.message.value,
+      website: form.website.value
+    };
+
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: { 'Content-Type': 'text/plain' }
+    })
+      .then(function (response) { return response.json(); })
+      .then(function (data) {
+        if (data.result === 'success') {
+          status.textContent = 'Thank you! We\'ll be in touch soon.';
+          status.classList.add('success');
+          form.reset();
+        } else {
+          throw new Error(data.error || 'Submission failed');
+        }
+      })
+      .catch(function () {
+        status.textContent = 'Something went wrong. Please call us at (208) 687-1955.';
+        status.classList.add('error');
+      })
+      .finally(function () {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Inquiry';
       });
-
-      if (response.ok) {
-        status.textContent = 'Thank you! We\'ll be in touch soon.';
-        status.classList.add('success');
-        form.reset();
-      } else {
-        throw new Error('Form submission failed');
-      }
-    } catch (err) {
-      status.textContent = 'Something went wrong. Please call us at (208) 687-1955.';
-      status.classList.add('error');
-    }
-
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Send Inquiry';
   });
 })();
 
 // Service area map with Leaflet
-(function() {
+(function () {
   // Center on the North Idaho service area
   const map = L.map('map', {
     scrollWheelZoom: false
